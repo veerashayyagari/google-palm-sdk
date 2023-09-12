@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LLMSharp.Google.Palm
 {
@@ -10,8 +11,9 @@ namespace LLMSharp.Google.Palm
         /// </summary>
         /// <param name="name">Palm Model name</param>
         /// <param name="reqOptions">Request specific options to configure</param>
+        /// <param name="cancellationToken">Token to cancel the async fetch of model</param>
         /// <returns>Palm Model details</returns>
-        public PalmModel GetModel(string name, RequestOptions? reqOptions = null);
+        public Task<PalmModel> GetModelAsync(string name, RequestOptions? reqOptions = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// fetch available palm models by page

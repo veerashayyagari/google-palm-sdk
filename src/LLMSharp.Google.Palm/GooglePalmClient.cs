@@ -30,7 +30,7 @@ namespace LLMSharp.Google.Palm
             throw new NotImplementedException();
         }
 
-        public PalmModel GetModel(string name, RequestOptions? reqOptions = null)
+        public Task<PalmModel> GetModelAsync(string name, RequestOptions? reqOptions = null, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

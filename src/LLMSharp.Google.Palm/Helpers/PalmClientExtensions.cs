@@ -1,6 +1,9 @@
-﻿using Grpc.Core;
+﻿using Google.Api.Gax.Grpc;
+using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using gax = Google.Api.Gax;
 
 namespace LLMSharp.Google.Palm.Helpers
@@ -66,21 +69,60 @@ namespace LLMSharp.Google.Palm.Helpers
         internal static T ConfigureServiceSettings<T>(this T settings, ClientOptions clientOptions) where T : gax::Grpc.ServiceSettingsBase
         {
             gax::Expiration exp = clientOptions.Timeout.HasValue ? gax::Expiration.FromTimeout(clientOptions.Timeout.Value) : gax::Expiration.None;
-            settings.CallSettings = new gax::Grpc.CallSettings(null, exp, null, ConstructMutateHeaderAction(clientOptions), null, null);
+            settings.CallSettings = new gax::Grpc.CallSettings(null, exp, null, ConstructMutateHeaderAction(clientOptions.ApiKey, clientOptions.CustomHeaders), null, null);
             return settings;
+        }
+
+        /// <summary>
+        /// Custom request call settings using the provided request options
+        /// </summary>
+        /// <param name="reqOptions">Request option settings</param>
+        /// <param name="token">Token for canceling the call</param>
+        /// <returns>Customized call settings</returns>
+        internal static gax::Grpc.CallSettings? GetCallSettings(this RequestOptions? reqOptions, CancellationToken? token)
+        {
+            if (reqOptions == null) return null;
+
+            gax::Expiration exp = reqOptions.Timeout.HasValue ? gax::Expiration.FromTimeout(reqOptions.Timeout.Value) : gax::Expiration.None;
+            Action<Metadata>? mutateAction = ConstructMutateHeaderAction(null, reqOptions.RequestHeaders);
+            RetrySettings? retrySettings = null;
+
+            if (reqOptions.MaxRetries.HasValue)
+            {
+                static bool retryFilter(Exception ex)
+                {
+                    if (ex is RpcException)
+                    {
+                        var rex = ex as RpcException;
+                        if (rex?.StatusCode == StatusCode.Internal || rex?.StatusCode == StatusCode.DeadlineExceeded)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+
+                retrySettings = gax::Grpc.RetrySettings.FromExponentialBackoff(
+                    reqOptions.MaxRetries.Value,
+                    TimeSpan.FromMilliseconds(200), TimeSpan.FromMilliseconds(1000), 2, retryFilter);
+            }
+
+            return new gax::Grpc.CallSettings(token, exp, retrySettings, mutateAction, null, null);
         }
 
         /// <summary>
         /// Action that updates metadata for the GrpcClient using ClientOptions
         /// Adds apikey and/or any custom headers if present.
         /// </summary>
-        /// <param name="clientOptions">ClientOptions used for configuration</param>
+        /// <param name="apiKey">apiKey to update if exists</param>
+        /// <param name="customHeaders">customHeaders to update if they exist</param>
         /// <returns>Action that updates metadata</returns>
-        private static Action<Metadata>? ConstructMutateHeaderAction(ClientOptions clientOptions)
+        private static Action<Metadata>? ConstructMutateHeaderAction(string? apiKey, IDictionary<string, string>? customHeaders)
         {
-            if (string.IsNullOrEmpty(clientOptions.ApiKey))
+            if (string.IsNullOrEmpty(apiKey))
             {
-                if (clientOptions.CustomHeaders == null)
+                if (customHeaders == null)
                 {
                     return null;
                 }
@@ -88,15 +130,15 @@ namespace LLMSharp.Google.Palm.Helpers
 
             void headerMutate(Metadata m)
             {
-                if (!string.IsNullOrEmpty(clientOptions.ApiKey))
+                if (!string.IsNullOrEmpty(apiKey))
                 {
-                    m.Add(Constants.GrpcClientHeaderForApiKey, clientOptions.ApiKey);
+                    m.Add(Constants.GrpcClientHeaderForApiKey, apiKey);
                 }
 
-                if(clientOptions.CustomHeaders != null)
+                if (customHeaders != null)
                 {
-                    foreach(var header in clientOptions.CustomHeaders)
-                    {                        
+                    foreach (var header in customHeaders)
+                    {
                         m.Add(header.Key, header.Value);
                     }
                 }
