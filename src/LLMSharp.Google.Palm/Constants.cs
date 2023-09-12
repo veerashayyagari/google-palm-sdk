@@ -3,7 +3,7 @@
     /// <summary>
     /// Google Palm SDK constants
     /// </summary>
-    internal class Constants
+    internal sealed class Constants
     {
         public const string PalmApiKeyEnvVar = "GOOGLE_API_KEY";
         public const string GrpcClientHeaderForApiKey = "x-goog-api-key";

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using gav = Google.Ai.Generativelanguage.V1Beta2;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LLMSharp.Google.Palm.Common
 {
@@ -7,9 +9,15 @@ namespace LLMSharp.Google.Palm.Common
     /// </summary>
     public class PalmCitationMetadata
     {
+        internal PalmCitationMetadata(gav::CitationMetadata citationMetadata)
+        {
+            if (citationMetadata == null) return;
+            this.CitationSources = citationMetadata.CitationSources.Select(cs => new PalmCitationSource(cs));
+        }
+
         /// <summary>
         /// Citations to sources for a specific response.
         /// </summary>
-        public IEnumerable<PalmCitationSource> CitationSources { get; set; } = new List<PalmCitationSource>();
+        public IEnumerable<PalmCitationSource> CitationSources { get; private set; } = Enumerable.Empty<PalmCitationSource>();
     }
 }

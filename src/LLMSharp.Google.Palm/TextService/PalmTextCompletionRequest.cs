@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LLMSharp.Google.Palm
 {
-    public class GenerateTextRequest
+    public class PalmTextCompletionRequest
     {
         /// <summary>
         /// Which model to call
@@ -20,7 +20,7 @@ namespace LLMSharp.Google.Palm
         /// Controls the randomness of the output. Must be positive. Typical values are in the range: [0.0,1.0]. 
         /// Higher values produce a more random and varied response. A temperature of zero will be deterministic.
         /// </summary>
-        public float Temperature { get; set; }
+        public float? Temperature { get; set; }
 
         /// <summary>
         /// The maximum number of generated response messages to return.

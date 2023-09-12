@@ -13,18 +13,20 @@ namespace LLMSharp.Google.Palm
         /// <param name="options">Options for the specific Grpc call</param>
         /// <param name="token">token for cancelling the request</param>
         /// <returns>TextCompletion response from the Palm Model</returns>
-        public Task<PalmTextCompletion> GenerateTextAsync(GenerateTextRequest request, RequestOptions? options, CancellationToken token = default);
+        public Task<PalmTextCompletionResponse> GenerateTextAsync(PalmTextCompletionRequest request, RequestOptions? options, CancellationToken token = default);
 
         /// <summary>
         /// Calls the Palm Embedding Model to create an embedding for the text passed in.
         /// </summary>
         /// <param name="text">text to embed</param>
         /// <param name="model">embedding model to use</param>
+        /// <param name="options">Options for the specific Grpc call</param>
         /// <param name="token">token for cancelling the request</param>
         /// <returns>list of float values (embeddings) for the text.</returns>
         public Task<IEnumerable<float>> GenerateEmbeddingsAsync(
             string text,
             string model = Constants.DefaultPalmTextCompletionModel,
+            RequestOptions? options = null,
             CancellationToken token = default);        
     }
 }

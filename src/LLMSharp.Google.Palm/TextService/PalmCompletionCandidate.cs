@@ -1,10 +1,19 @@
-﻿using LLMSharp.Google.Palm.Common;
+﻿using gav = Google.Ai.Generativelanguage.V1Beta2;
+using LLMSharp.Google.Palm.Common;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LLMSharp.Google.Palm
 {
     public class PalmCompletionCandidate
     {
+        internal PalmCompletionCandidate(gav::TextCompletion c)
+        {
+            this.Output = c.Output;
+            this.SafetyRatings = c.SafetyRatings.Select(r => new PalmSafetyRating(r.Category, r.Probability));
+            this.CitationMetadata = new PalmCitationMetadata(c.CitationMetadata);
+        }
+
         /// <summary>
         /// The generated text returned from the model.
         /// </summary>

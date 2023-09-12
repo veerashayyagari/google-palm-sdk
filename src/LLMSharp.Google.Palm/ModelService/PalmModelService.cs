@@ -1,4 +1,5 @@
 ﻿using LLMSharp.Google.Palm.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,9 +12,9 @@ namespace LLMSharp.Google.Palm
     /// <summary>
     /// Implementation of Palm Model Service
     /// </summary>
-    internal class PalmModelService : IPalmModelService
+    internal sealed class PalmModelService : IPalmModelService
     {           
-        private readonly gav::ModelServiceClient _client = PalmClientFactory.GetModelServiceClient();
+        private readonly Lazy<gav::ModelServiceClient> _client = new(PalmClientFactory.GetModelServiceClient);
 
         /// <summary>
         /// Gets the Palm Model for the given model name
@@ -25,7 +26,7 @@ namespace LLMSharp.Google.Palm
         public async Task<PalmModel> GetModelAsync(string name, RequestOptions? reqOptions = null, CancellationToken cancellationToken = default)
         {
             var callSettings = reqOptions.GetCallSettings(cancellationToken);
-            gav::Model model = await _client.GetModelAsync(name, callSettings);
+            gav::Model model = await _client.Value.GetModelAsync(name, callSettings).ConfigureAwait(false);
             return new PalmModel(model);
         }
 
@@ -39,7 +40,7 @@ namespace LLMSharp.Google.Palm
         public (IEnumerable<PalmModel>, string?) ListModels(int pageSize = 10, string? continuationToken = null, RequestOptions? reqOptions = null)
         {
             var callSettings = reqOptions.GetCallSettings(default);
-            var responses = _client.ListModels(pageSize, continuationToken, callSettings).AsRawResponses();
+            var responses = _client.Value.ListModels(pageSize, continuationToken, callSettings).AsRawResponses();
             
             List<PalmModel> modelsList = new();
             string? pageToken = null;
@@ -62,7 +63,7 @@ namespace LLMSharp.Google.Palm
         public async IAsyncEnumerable<PalmModel> ListModelsAsync(RequestOptions? reqOptions = null,[EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var callSettings = reqOptions.GetCallSettings(cancellationToken);
-            var responses = _client.ListModelsAsync(null, null, callSettings);
+            var responses = _client.Value.ListModelsAsync(null, null, callSettings).ConfigureAwait(false);
             await foreach(var response in responses)
             {
                 yield return new PalmModel(response);

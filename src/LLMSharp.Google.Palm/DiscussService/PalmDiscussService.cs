@@ -1,17 +1,20 @@
-﻿using LLMSharp.Google.Palm.DiscussService;
+﻿using LLMSharp.Google.Palm.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using gav = Google.Ai.Generativelanguage.V1Beta2;
 
-namespace LLMSharp.Google.Palm
+namespace LLMSharp.Google.Palm.DiscussService
 {
     /// <summary>
-    /// Contract implemented for the Palm Discuss Service
+    /// Implementation for DiscussService contract
     /// </summary>
-    public interface IPalmDiscussService
+    internal sealed class PalmDiscussService : IPalmDiscussService
     {
+        private readonly Lazy<gav::DiscussServiceClient> _client = new(PalmClientFactory.GetDiscussServiceClient);
+
         /// <summary>
         /// Calls the Chat Completions Model endpoint and returns Chat Response
         /// </summary>
@@ -19,9 +22,17 @@ namespace LLMSharp.Google.Palm
         /// <param name="options">Options for customizing the request</param>
         /// <param name="token">token used for cancelling the async request</param>
         /// <returns>Chat Response with candidates</returns>
-        public Task<PalmChatCompletionResponse?> ChatAsync(PalmChatCompletionRequest request,
-            RequestOptions? options,
-            CancellationToken token);
+        public async Task<PalmChatCompletionResponse?> ChatAsync(PalmChatCompletionRequest request, RequestOptions? options, CancellationToken token)
+        {
+            var callSettings = options.GetCallSettings(token);
+            var response = await _client.Value.GenerateMessageAsync(request.ToGavGenerateMessageRequest(), callSettings).ConfigureAwait(false);
+            if(response != null)
+            {
+                return new PalmChatCompletionResponse(response);
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Count total number of message tokens given a message with optional context and examples
@@ -33,12 +44,21 @@ namespace LLMSharp.Google.Palm
         /// <param name="options">Options for customizing the request</param>
         /// <param name="cancellationToken">token used for cancelling the async request</param>
         /// <returns>message token count</returns>
-        public Task<int> CountMessageTokensAsync(
+        public async Task<int> CountMessageTokensAsync(
             IEnumerable<PalmChatMessage> messages,
             IEnumerable<PalmChatExample>? examples,
             string? context,
             string model,
-            RequestOptions? options,
-            CancellationToken cancellationToken);
+            RequestOptions? reqOptions,
+            CancellationToken cancellationToken)
+        {
+            var callSettings = reqOptions.GetCallSettings(cancellationToken);
+            var result = await _client.Value.CountMessageTokensAsync(
+                model,
+                messages.GetMessagePrompt(context, examples),
+                callSettings)
+                .ConfigureAwait(false);
+            return result.TokenCount;
+        }        
     }
 }

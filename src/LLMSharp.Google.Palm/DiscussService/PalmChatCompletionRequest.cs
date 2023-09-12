@@ -1,12 +1,9 @@
-﻿using Google.Api;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static Google.Rpc.Context.AttributeContext.Types;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace LLMSharp.Google.Palm.DiscussService
 {
-    public class PalmChatRequest
+    public class PalmChatCompletionRequest
     {
         /// <summary>
         /// Which model to call
@@ -27,20 +24,20 @@ namespace LLMSharp.Google.Palm.DiscussService
         /// These examples are treated identically to conversation messages except that they 
         /// take precedence over the history in messages: If the total input size exceeds the model's input_token_limit the input will be truncated. Items will be dropped from messages before examples
         /// </summary>
-        public IReadOnlyList<PalmChatExample>? Examples { get; set; }
+        public IEnumerable<PalmChatExample> Examples { get; set; } = Enumerable.Empty<PalmChatExample>();
 
         /// <summary>
         /// A snapshot of the conversation history sorted chronologically.
         /// Turns alternate between two authors.
         /// If the total input size exceeds the model's input_token_limit the input will be truncated: The oldest items will be dropped from messages.
         /// </summary>
-        public IReadOnlyList<PalmChatMessage>? Messages { get; set; }
+        public IEnumerable<PalmChatMessage> Messages { get; set; } = Enumerable.Empty<PalmChatMessage>();
 
         /// <summary>
         /// Controls the randomness of the output. Must be positive. Typical values are in the range: [0.0,1.0]. 
         /// Higher values produce a more random and varied response. A temperature of zero will be deterministic.
         /// </summary>
-        public float Temperature { get; set; }
+        public float? Temperature { get; set; }
 
         /// <summary>
         /// The maximum number of generated response messages to return.
