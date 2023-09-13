@@ -45,6 +45,7 @@ namespace LLMSharp.Google.Palm
             this.BaseModelId = model.BaseModelId;
             this.Version = model.Version;
             this.DisplayName = model.DisplayName;
+            this.Description= model.Description;
             this.InputTokenLimit = model.InputTokenLimit;
             this.OutputTokenLimit = model.OutputTokenLimit;
             this.SupportedGenerationMethods = model.SupportedGenerationMethods;
@@ -127,7 +128,7 @@ namespace LLMSharp.Google.Palm
         /// </summary>
         public int? TopK { get; private set; }
 
-        private static string MakeModelName(string name)
+        internal static string MakeModelName(string name)
         {
             if (bareModelName.IsMatch(name))
             {

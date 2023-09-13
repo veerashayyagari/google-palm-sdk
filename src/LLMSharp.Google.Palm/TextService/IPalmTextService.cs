@@ -25,7 +25,7 @@ namespace LLMSharp.Google.Palm
         /// <returns>list of float values (embeddings) for the text.</returns>
         public Task<IEnumerable<float>> GenerateEmbeddingsAsync(
             string text,
-            string model = Constants.DefaultPalmTextCompletionModel,
+            string model = Constants.DefaultEmbeddingModel,
             RequestOptions? options = null,
             CancellationToken token = default);        
     }

@@ -1,4 +1,6 @@
-﻿using LLMSharp.Google.Palm.Helpers;
+﻿using Grpc.Core;
+using LLMSharp.Google.Palm.Common;
+using LLMSharp.Google.Palm.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +27,16 @@ namespace LLMSharp.Google.Palm
         /// <returns>Palm Model details</returns>
         public async Task<PalmModel> GetModelAsync(string name, RequestOptions? reqOptions = null, CancellationToken cancellationToken = default)
         {
-            var callSettings = reqOptions.GetCallSettings(cancellationToken);
-            gav::Model model = await _client.Value.GetModelAsync(name, callSettings).ConfigureAwait(false);
-            return new PalmModel(model);
+            try
+            {
+                var callSettings = reqOptions.GetCallSettings(cancellationToken);
+                gav::Model model = await _client.Value.GetModelAsync(PalmModel.MakeModelName(name), callSettings).ConfigureAwait(false);
+                return new PalmModel(model);
+            }
+            catch (RpcException ex)
+            {
+                throw new PalmClientException(Constants.RpcExceptionMessage, ex.InnerException, ex.Status.StatusCode, ex.Status.Detail);
+            }
         }
 
         /// <summary>
@@ -39,19 +48,28 @@ namespace LLMSharp.Google.Palm
         /// <returns>Iterable enumeration of Palm Models and any continuation token to use for next page</returns>
         public (IEnumerable<PalmModel>, string?) ListModels(int pageSize = 10, string? continuationToken = null, RequestOptions? reqOptions = null)
         {
-            var callSettings = reqOptions.GetCallSettings(default);
-            var responses = _client.Value.ListModels(pageSize, continuationToken, callSettings).AsRawResponses();
-            
-            List<PalmModel> modelsList = new();
-            string? pageToken = null;
-
-            foreach (var response in responses)
+            try
             {
-                modelsList.AddRange(response.Models.Select(x =>  new PalmModel(x)));
-                pageToken = response.NextPageToken;
-            }
+                var callSettings = reqOptions.GetCallSettings(default);
+                var responses = _client.Value.ListModels(pageSize, continuationToken, callSettings).AsRawResponses();
 
-            return (modelsList, pageToken);
+                List<PalmModel> modelsList = new();
+                string? pageToken = null;
+
+                foreach (var response in responses)
+                {
+                    modelsList.AddRange(response.Models.Select(x => new PalmModel(x)));
+                    pageToken = response.NextPageToken;
+
+                    if (modelsList.Count == pageSize) break;
+                }
+
+                return (modelsList, pageToken);
+            }
+            catch (RpcException ex)
+            {
+                throw new PalmClientException(Constants.RpcExceptionMessage, ex.InnerException, ex.Status.StatusCode, ex.Status.Detail);
+            }
         }
 
         /// <summary>
@@ -62,9 +80,19 @@ namespace LLMSharp.Google.Palm
         /// <returns>An AsyncEnumerable stream of palm models</returns>
         public async IAsyncEnumerable<PalmModel> ListModelsAsync(RequestOptions? reqOptions = null,[EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            var callSettings = reqOptions.GetCallSettings(cancellationToken);
-            var responses = _client.Value.ListModelsAsync(null, null, callSettings).ConfigureAwait(false);
-            await foreach(var response in responses)
+            ConfiguredCancelableAsyncEnumerable<gav::Model> responses;
+
+            try
+            {
+                var callSettings = reqOptions.GetCallSettings(cancellationToken);
+                responses = _client.Value.ListModelsAsync(null, null, callSettings).ConfigureAwait(false);                
+            }
+            catch (RpcException ex)
+            {
+                throw new PalmClientException(Constants.RpcExceptionMessage, ex.InnerException, ex.Status.StatusCode, ex.Status.Detail);
+            }
+
+            await foreach (var response in responses)
             {
                 yield return new PalmModel(response);
             }

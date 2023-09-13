@@ -1,6 +1,7 @@
 ﻿using LLMSharp.Google.Palm.DiscussService;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -53,7 +54,11 @@ namespace LLMSharp.Google.Palm
             CancellationToken token = default)
         {
             return await this.ChatAsync(
-                new PalmChatCompletionRequest { Messages = messages, Context = context ?? string.Empty, Examples = examples },
+                new PalmChatCompletionRequest { 
+                    Messages = messages,
+                    Context = context ?? string.Empty,
+                    Examples = examples ?? Enumerable.Empty<PalmChatExample>() 
+                },
                 options,
                 token).ConfigureAwait(false);
         }
@@ -105,7 +110,7 @@ namespace LLMSharp.Google.Palm
         /// <returns>list of float values (embeddings) for the text.</returns>
         public async Task<IEnumerable<float>> GenerateEmbeddingsAsync(
             string text,
-            string model = Constants.DefaultPalmTextCompletionModel,
+            string model = Constants.DefaultEmbeddingModel,
             RequestOptions? options = null,
             CancellationToken token = default)
         {

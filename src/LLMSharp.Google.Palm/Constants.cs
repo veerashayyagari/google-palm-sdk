@@ -10,5 +10,7 @@
         public const string PalmDotnetSdkUserAgent = "llmsharp-google-palm-client-sdk";
         public const string DefaultPalmTextCompletionModel = "models/text-bison-001";
         public const string DefaultPalmChatCompletionModel = "models/chat-bison-001";
+        public const string DefaultEmbeddingModel = "models/embedding-gecko-001";
+        public const string RpcExceptionMessage = "Rpc Exception occured with Status:{0}. Details: {1}";
     }
 }

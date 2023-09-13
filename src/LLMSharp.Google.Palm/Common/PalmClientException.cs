@@ -8,8 +8,8 @@ namespace LLMSharp.Google.Palm.Common
     /// </summary>
     public class PalmClientException : Exception
     {
-        public PalmClientException(string message, params object[] args) :
-            base(string.Format(CultureInfo.CurrentCulture, message, args))
+        public PalmClientException(string message, Exception? innerException = null, params object[] args) :
+            base(string.Format(CultureInfo.CurrentCulture, message, args), innerException)
         { }
     }
 }
