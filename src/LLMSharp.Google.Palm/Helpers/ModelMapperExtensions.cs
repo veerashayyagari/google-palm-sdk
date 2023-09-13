@@ -64,9 +64,9 @@ namespace LLMSharp.Google.Palm.Helpers
                 generateTextRequest.TopP = request.TopP.Value;
             }
 
-            if(request.MaxOuptputTokens.HasValue)
+            if(request.MaxOutputTokens.HasValue)
             {
-                generateTextRequest.MaxOutputTokens = request.MaxOuptputTokens.Value;
+                generateTextRequest.MaxOutputTokens = request.MaxOutputTokens.Value;
             }
 
             if(request.SafetySettings != null)

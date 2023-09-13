@@ -32,7 +32,7 @@ namespace LLMSharp.Google.Palm
         /// Maximum number of tokens to include in a candidate.
         /// Must be greater than zero. 
         /// </summary>
-        public int? MaxOuptputTokens { get; set; }
+        public int? MaxOutputTokens { get; set; }
 
         /// <summary>
         /// sets the maximum number of tokens to sample from on each step.
