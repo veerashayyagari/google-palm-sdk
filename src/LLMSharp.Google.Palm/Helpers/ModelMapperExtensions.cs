@@ -3,6 +3,7 @@ using LLMSharp.Google.Palm.DiscussService;
 using System.Collections.Generic;
 using System.Linq;
 using gav = Google.Ai.Generativelanguage.V1Beta2;
+using gax = Google.Api.Gax;
 
 namespace LLMSharp.Google.Palm.Helpers
 {
@@ -44,14 +45,16 @@ namespace LLMSharp.Google.Palm.Helpers
         {
             gav::GenerateTextRequest generateTextRequest = new()
             {
-                CandidateCount = request.CandidateCount,
                 Model = request.Model,
-                Prompt = new gav::TextPrompt { Text = request.Prompt },                           
+                Prompt = new gav::TextPrompt { Text = request.Prompt },
+                CandidateCount = gax::GaxPreconditions.
+                    CheckArgumentRange<int>(request.CandidateCount, nameof(request.CandidateCount), 1, 8)
             };
 
-            if(request.Temperature.HasValue)
-            {
-                generateTextRequest.Temperature = request.Temperature.Value;
+            if (request.Temperature.HasValue)
+            {                
+                generateTextRequest.Temperature = gax::GaxPreconditions.
+                    CheckArgumentRange<float>(request.Temperature.Value, nameof(request.Temperature), 0, 1);
             }
 
             if(request.TopK.HasValue)
@@ -60,8 +63,9 @@ namespace LLMSharp.Google.Palm.Helpers
             }
 
             if(request.TopP.HasValue)
-            {
-                generateTextRequest.TopP = request.TopP.Value;
+            {                
+                generateTextRequest.TopP = gax::GaxPreconditions.
+                    CheckArgumentRange<float>(request.TopP.Value, nameof(request.TopP.Value), 0, 1);
             }
 
             if(request.MaxOutputTokens.HasValue)
@@ -91,14 +95,16 @@ namespace LLMSharp.Google.Palm.Helpers
         {
             gav::GenerateMessageRequest generateMessageRequest = new()
             {
-                CandidateCount = request.CandidateCount,
-                Model = request.Model,                
-                Prompt = request.Messages.GetMessagePrompt(request.Context, request.Examples)
+                Model = request.Model,
+                Prompt = request.Messages.GetMessagePrompt(request.Context, request.Examples),
+                CandidateCount = gax::GaxPreconditions.
+                    CheckArgumentRange<int>(request.CandidateCount, nameof(request.CandidateCount), 1, 8)
             };
 
-            if(request.Temperature.HasValue)
+            if (request.Temperature.HasValue)
             {
-                generateMessageRequest.Temperature = request.Temperature.Value;
+                generateMessageRequest.Temperature = gax::GaxPreconditions.
+                    CheckArgumentRange<float>(request.Temperature.Value, nameof(request.Temperature), 0, 1);
             }
 
             if(request.TopK.HasValue)
@@ -108,7 +114,8 @@ namespace LLMSharp.Google.Palm.Helpers
 
             if(request.TopP.HasValue)
             {
-                generateMessageRequest.TopP = request.TopP.Value;
+                generateMessageRequest.TopP = gax::GaxPreconditions.
+                    CheckArgumentRange<float>(request.TopP.Value, nameof(request.TopP.Value), 0, 1);
             }
 
             return generateMessageRequest;
