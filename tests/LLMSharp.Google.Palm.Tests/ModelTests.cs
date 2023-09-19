@@ -1,5 +1,4 @@
 ﻿using LLMSharp.Google.Palm.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LLMSharp.Google.Palm.Tests
 {
