@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <PackageId>LLMSharp.Google.Palm</PackageId>
-		<TargetFramework>netstandard2.0</TargetFramework>
+	<PropertyGroup>
+		<PackageId>LLMSharp.Google.Palm</PackageId>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -15,14 +15,25 @@
 		<Title>Google Palm Client SDK</Title>
 		<PackageProjectUrl>https://github.com/veerashayyagari/google-palm-sdk</PackageProjectUrl>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<PackageReadmeFile>README.md</PackageReadmeFile>		
-  </PropertyGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\..\README.md">
+	<ItemGroup>
+		<None Include="..\..\README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-  </ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Google.Apis.Auth" Version="1.62.0" />
+		<PackageReference Include="Google.Apis.Core" Version="1.62.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />		
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Google.Ai.Generativelanguage.V1Beta2\Google.Ai.Generativelanguage.V1Beta2.csproj" />
+	</ItemGroup>
 
 </Project>
