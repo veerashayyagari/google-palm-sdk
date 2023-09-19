@@ -39,7 +39,7 @@ jobs:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       - name: Pack Palm SDK        
         run: dotnet pack ./src/LLMSharp.Google.Palm/LLMSharp.Google.Palm.csproj --configuration Release --output . -p:Version=${VERSION}      
-      - name: Publish Nuget Package
-        run: dotnet nuget push LLMSharp.Google.Palm.${VERSION}.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${NUGET_API_KEY}
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    #   - name: Publish Nuget Package
+    #     run: dotnet nuget push LLMSharp.Google.Palm.${VERSION}.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${NUGET_API_KEY}
+    #     env:
+    #       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
