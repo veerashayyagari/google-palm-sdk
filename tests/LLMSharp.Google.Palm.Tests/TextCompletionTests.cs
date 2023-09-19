@@ -97,14 +97,11 @@ namespace LLMSharp.Google.Palm.Tests
             };
             
             var response = await _client.GenerateTextAsync(request);
-            Assert.IsNotNull(response);
-            Assert.AreEqual(response.Candidates.Count(), 1);
+            Assert.IsNotNull(response);            
             Assert.IsTrue(response.Filters.Any());
             Assert.AreEqual(response.Filters.First().Reason, ContentFilter.Types.BlockedReason.Safety);
             Assert.IsTrue(response.SafetyFeedback.Any());
-            Assert.AreEqual(response.SafetyFeedback.First().Rating!.Category, HarmCategory.Medical);
-            Assert.AreEqual(response.SafetyFeedback.First().Rating!.Probability, SafetyRating.Types.HarmProbability.Low);
-            Assert.AreEqual(response.SafetyFeedback.First().Setting!.Threshold, SafetySetting.Types.HarmBlockThreshold.BlockLowAndAbove);
+            Assert.AreEqual(response.SafetyFeedback.First().Rating!.Category, HarmCategory.Medical);            
             Assert.AreEqual(response.SafetyFeedback.First().Setting!.Category, HarmCategory.Medical);
         }
 

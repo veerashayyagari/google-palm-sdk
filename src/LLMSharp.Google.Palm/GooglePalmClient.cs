@@ -96,8 +96,14 @@ namespace LLMSharp.Google.Palm
             RequestOptions? options = null,
             CancellationToken cancellationToken = default)
         {
-            return await this._palmDiscussService.CountMessageTokensAsync(messages, examples, context, model, options, cancellationToken)
-                .ConfigureAwait(false);
+            return await this._palmDiscussService.CountMessageTokensAsync(
+                messages,
+                examples ?? Enumerable.Empty<PalmChatExample>(),
+                context,
+                model,
+                options,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <summary>

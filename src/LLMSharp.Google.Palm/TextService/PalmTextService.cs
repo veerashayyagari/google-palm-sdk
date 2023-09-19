@@ -34,7 +34,7 @@ namespace LLMSharp.Google.Palm
             }
             catch (RpcException ex)
             {
-                throw new PalmClientException(Constants.RpcExceptionMessage, ex.InnerException, ex.Status.StatusCode, ex.Status.Detail);
+                throw new PalmClientException(ex.Status, ex.InnerException);
             }
         }
 
@@ -57,7 +57,7 @@ namespace LLMSharp.Google.Palm
             }
             catch (RpcException ex)
             {
-                throw new PalmClientException(Constants.RpcExceptionMessage, ex.InnerException, ex.Status.StatusCode, ex.Status.Detail);
+                throw new PalmClientException(ex.Status, ex.InnerException);
             }
         }
     }

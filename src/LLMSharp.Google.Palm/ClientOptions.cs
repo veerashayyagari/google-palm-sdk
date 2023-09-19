@@ -20,13 +20,7 @@ namespace LLMSharp.Google.Palm
         /// <summary>
         /// [Optional] The grpc endpoint to connect to, or null to use the default endpoint "generativelanguage.googleapis.com:443".
         /// </summary>
-        public string? Endpoint { get; set; }
-
-        /// <summary>
-        /// [Optional] Timeout for the grpc call. If null, no timeout is applied.
-        /// Zero or negative timeouts are valid, and will cause immediate failure of the operation being performed.
-        /// </summary>
-        public TimeSpan? Timeout { get; set; }
+        public string? Endpoint { get; set; }        
 
         /// <summary>
         /// [Optional] Custom headers to add for every client request being made to Palm endpoints.

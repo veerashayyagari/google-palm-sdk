@@ -67,9 +67,8 @@ namespace LLMSharp.Google.Palm.Helpers
         /// <param name="clientOptions">clientOptions used for configuration</param>
         /// <returns>configured settings</returns>
         internal static T ConfigureServiceSettings<T>(this T settings, ClientOptions clientOptions) where T : gax::Grpc.ServiceSettingsBase
-        {
-            gax::Expiration exp = clientOptions.Timeout.HasValue ? gax::Expiration.FromTimeout(clientOptions.Timeout.Value) : gax::Expiration.None;
-            settings.CallSettings = new gax::Grpc.CallSettings(null, exp, null, ConstructMutateHeaderAction(clientOptions.ApiKey, clientOptions.CustomHeaders), null, null);
+        {            
+            settings.CallSettings = new gax::Grpc.CallSettings(null, gax::Expiration.None, null, ConstructMutateHeaderAction(clientOptions.ApiKey, clientOptions.CustomHeaders), null, null);
             return settings;
         }
 

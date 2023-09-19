@@ -1,4 +1,6 @@
-﻿using LLMSharp.Google.Palm.Helpers;
+﻿using Grpc.Core;
+using LLMSharp.Google.Palm.Common;
+using LLMSharp.Google.Palm.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,14 +26,21 @@ namespace LLMSharp.Google.Palm.DiscussService
         /// <returns>Chat Response with candidates</returns>
         public async Task<PalmChatCompletionResponse?> ChatAsync(PalmChatCompletionRequest request, RequestOptions? options, CancellationToken token)
         {
-            var callSettings = options.GetCallSettings(token);
-            var response = await _client.Value.GenerateMessageAsync(request.ToGavGenerateMessageRequest(), callSettings).ConfigureAwait(false);
-            if(response != null)
+            try
             {
-                return new PalmChatCompletionResponse(response);
-            }
+                var callSettings = options.GetCallSettings(token);
+                var response = await _client.Value.GenerateMessageAsync(request.ToGavGenerateMessageRequest(), callSettings).ConfigureAwait(false);
+                if (response != null)
+                {
+                    return new PalmChatCompletionResponse(response);
+                }
 
-            return null;
+                return null;
+            }
+            catch (RpcException ex)
+            {
+                throw new PalmClientException(ex.Status, ex.InnerException);
+            }
         }
 
         /// <summary>
@@ -52,13 +61,20 @@ namespace LLMSharp.Google.Palm.DiscussService
             RequestOptions? reqOptions,
             CancellationToken cancellationToken)
         {
-            var callSettings = reqOptions.GetCallSettings(cancellationToken);
-            var result = await _client.Value.CountMessageTokensAsync(
-                model,
-                messages.GetMessagePrompt(context, examples),
-                callSettings)
-                .ConfigureAwait(false);
-            return result.TokenCount;
-        }        
+            try
+            {
+                var callSettings = reqOptions.GetCallSettings(cancellationToken);
+                var result = await _client.Value.CountMessageTokensAsync(
+                    model,
+                    messages.GetMessagePrompt(context, examples),
+                    callSettings)
+                    .ConfigureAwait(false);
+                return result.TokenCount;
+            }
+            catch (RpcException ex)
+            {
+                throw new PalmClientException(ex.Status, ex.InnerException);
+            }
+        }
     }
 }

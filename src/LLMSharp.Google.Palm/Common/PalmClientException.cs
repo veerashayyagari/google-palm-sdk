@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Grpc.Core;
 
 namespace LLMSharp.Google.Palm.Common
 {
@@ -8,8 +9,13 @@ namespace LLMSharp.Google.Palm.Common
     /// </summary>
     public class PalmClientException : Exception
     {
-        public PalmClientException(string message, Exception? innerException = null, params object[] args) :
-            base(string.Format(CultureInfo.CurrentCulture, message, args), innerException)
-        { }
+        public Status Status { get; private set; }
+
+        public PalmClientException(
+            Status status, Exception? innerException = null)
+            : base(string.Format(CultureInfo.CurrentCulture, Constants.RpcExceptionMessage, status.StatusCode, status.Detail), innerException)
+        {
+            this.Status = status;
+        }        
     }
 }

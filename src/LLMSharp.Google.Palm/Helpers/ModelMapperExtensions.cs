@@ -131,10 +131,11 @@ namespace LLMSharp.Google.Palm.Helpers
         internal static gav::MessagePrompt GetMessagePrompt(
             this IEnumerable<PalmChatMessage> messages, string? context, IEnumerable<PalmChatExample>? examples)
         {
-            gav::MessagePrompt messagePrompt = new()
+            gav::MessagePrompt messagePrompt = new();
+            if(!string.IsNullOrEmpty(context))
             {
-                Context = context
-            };
+                messagePrompt.Context = context;
+            }
             messagePrompt.Messages.AddRange(messages.Select(m => m.ToGavMessage()));
             messagePrompt.Examples.AddRange(examples.Select(e => e.ToGavExample()));
             return messagePrompt;
