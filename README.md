@@ -30,7 +30,7 @@ GooglePalmClient client = new GooglePalmClient(<your palm api key>);
 OR
 
 ```csharp
-using LLMSharp.Anthropic;
+using LLMSharp.Google.Palm;
 
 // set API key as an environment variable with key 'GOOGLE_API_KEY'
 GooglePalmClient client = new GooglePalmClient();
