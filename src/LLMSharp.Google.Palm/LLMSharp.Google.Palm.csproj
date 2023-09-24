@@ -11,7 +11,7 @@
 		<Company>veerash-ayyagari</Company>
 		<PackageTags>palm, palm client, google vertex, dotnet, google palm sdk, vertex ai, google</PackageTags>
 		<RepositoryUrl>https://github.com/veerashayyagari/google-palm-sdk</RepositoryUrl>
-		<Description>Google Palm Client SDK (unofficial). Includes completions, chat message completions, embeddings, raw response, tokenusage, models, http/2 support and more.</Description>
+		<Description>Google Palm Client SDK (unofficial). Includes completions, chat message completions, embeddings, token usage, model info, consumes grpc endpoints.</Description>
 		<Title>Google Palm Client SDK</Title>
 		<PackageProjectUrl>https://github.com/veerashayyagari/google-palm-sdk</PackageProjectUrl>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
