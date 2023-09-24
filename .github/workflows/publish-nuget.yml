@@ -37,9 +37,11 @@ jobs:
         run: dotnet test ./tests/LLMSharp.Google.Palm.Tests/LLMSharp.Google.Palm.Tests.csproj --configuration Release
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      - name: Pack v1Beta2 Proto package        
+        run: dotnet pack ./src/Google.Ai.Generativelanguage.V1Beta2/Google.Ai.Generativelanguage.V1Beta2.csproj --configuration Release --output . -p:Version=${VERSION}
       - name: Pack Palm SDK        
         run: dotnet pack ./src/LLMSharp.Google.Palm/LLMSharp.Google.Palm.csproj --configuration Release --output . -p:Version=${VERSION}      
-    #   - name: Publish Nuget Package
-    #     run: dotnet nuget push LLMSharp.Google.Palm.${VERSION}.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${NUGET_API_KEY}
-    #     env:
-    #       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      - name: Publish Nuget Package
+        run: dotnet nuget push LLMSharp.*.${VERSION}.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${NUGET_API_KEY}
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
