@@ -16,6 +16,9 @@
 		<PackageProjectUrl>https://github.com/veerashayyagari/google-palm-sdk</PackageProjectUrl>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\google-palm-sdk.snk</AssemblyOriginatorKeyFile>
+		<DelaySign>True</DelaySign>
 	</PropertyGroup>
 
 	<ItemGroup>
