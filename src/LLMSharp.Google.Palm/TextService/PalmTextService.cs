@@ -19,7 +19,8 @@ namespace LLMSharp.Google.Palm
         /// <summary>
         /// Calls the text completion model and returns the response
         /// </summary>
-        /// <param name="request">Request parameters like 'prompt', 'model' and other model response customization options</param>
+        /// <param name="text">text to embed</param>
+        /// <param name="model">embedding model to use</param>
         /// <param name="options">Options for the specific Grpc call</param>
         /// <param name="token">token for cancelling the request</param>
         /// <returns>TextCompletion response from the Palm Model</returns>
@@ -39,10 +40,9 @@ namespace LLMSharp.Google.Palm
         }
 
         /// <summary>
-        /// Calls the Palm Embedding Model to create an embedding for the text passed in.
-        /// </summary>
-        /// <param name="text">text to embed</param>
-        /// <param name="model">embedding model to use</param>
+        /// Calls the Palm Text Generation Model to create text completions for the prompt.
+        /// </summary>                
+        /// <param name="request">Request parameters like 'prompt', 'model' and other model response customization options</param>
         /// <param name="options">Options for the specific Grpc call</param>
         /// <param name="token">token for cancelling the request</param>
         /// <returns>list of float values (embeddings) for the text.</returns>

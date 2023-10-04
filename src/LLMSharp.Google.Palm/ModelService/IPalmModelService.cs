@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace LLMSharp.Google.Palm
 {
+    /// <summary>
+    /// Palm2 Model Info, Model list and Model fetch service contract
+    /// </summary>
     public interface IPalmModelService
     {
         /// <summary>
