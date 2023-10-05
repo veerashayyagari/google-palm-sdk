@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace LLMSharp.Google.Palm
 {
+    /// <summary>
+    /// Class representing one of the candidate response from the TextCompletion model.
+    /// </summary>
     public class PalmCompletionCandidate
     {
         internal PalmCompletionCandidate(gav::TextCompletion c)

@@ -3,6 +3,9 @@ using gav = Google.Ai.Generativelanguage.V1Beta2;
 
 namespace LLMSharp.Google.Palm
 {
+    /// <summary>
+    /// Class representing a chat message to be used in the Palm Completion Request
+    /// </summary>
     public class PalmChatMessage
     {
         internal PalmChatMessage(gav::Message c)
@@ -12,6 +15,11 @@ namespace LLMSharp.Google.Palm
             this.CitationMetadata = new PalmCitationMetadata(c.CitationMetadata);
         }
 
+        /// <summary>
+        /// ChatMessage constructor
+        /// </summary>
+        /// <param name="content">content of the chat message</param>
+        /// <param name="author">author of the chat message generally "0" for the user and "1" for the AI</param>
         public PalmChatMessage(string content, string? author) 
         { 
             this.Author = author;

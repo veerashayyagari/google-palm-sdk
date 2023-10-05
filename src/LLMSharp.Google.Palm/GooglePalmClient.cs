@@ -12,9 +12,9 @@ namespace LLMSharp.Google.Palm
     /// </summary>
     public class GooglePalmClient : IGooglePalmClient
     {
-        private readonly IPalmModelService _palmModelService;
-        private readonly IPalmTextService _palmTextService;
-        private readonly IPalmDiscussService _palmDiscussService;
+        private readonly PalmModelService _palmModelService;
+        private readonly PalmTextService _palmTextService;
+        private readonly PalmDiscussService _palmDiscussService;
 
         /// <summary>
         /// Constructor for GooglePalmClient with ApiKey        
@@ -85,7 +85,7 @@ namespace LLMSharp.Google.Palm
         /// <param name="examples">Optional examples included as part of the message</param>
         /// <param name="context">Optional context included in the message</param>
         /// <param name="model">Model used for counting tokens. Default: models/chat-bison-001</param>
-        /// <param name="options">Options for customizing the request</param>
+        /// <param name="reqOptions">Options for customizing the request</param>
         /// <param name="cancellationToken">token used for cancelling the async request</param>
         /// <returns>message token count</returns>
         public async Task<int> CountMessageTokensAsync(
@@ -93,7 +93,7 @@ namespace LLMSharp.Google.Palm
             IEnumerable<PalmChatExample>? examples = null,
             string? context = null,
             string model = Constants.DefaultPalmChatCompletionModel,
-            RequestOptions? options = null,
+            RequestOptions? reqOptions = null,
             CancellationToken cancellationToken = default)
         {
             return await this._palmDiscussService.CountMessageTokensAsync(
@@ -101,7 +101,7 @@ namespace LLMSharp.Google.Palm
                 examples ?? Enumerable.Empty<PalmChatExample>(),
                 context,
                 model,
-                options,
+                reqOptions,
                 cancellationToken
             ).ConfigureAwait(false);
         }

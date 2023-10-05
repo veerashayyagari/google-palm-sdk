@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace LLMSharp.Google.Palm
 {
+    /// <summary>
+    /// Class representing a request to the Palm Text Completion API
+    /// </summary>
     public class PalmTextCompletionRequest
     {
         /// <summary>

@@ -18,7 +18,12 @@ namespace LLMSharp.Google.Palm.Common
         /// </summary>
         public HarmProbability Probability { get; private set; }
 
-        public PalmSafetyRating(gav::HarmCategory category, HarmProbability probability)
+        /// <summary>
+        /// Palm Safety Rating constructor
+        /// </summary>
+        /// <param name="category"> HarmCategory for the rating </param>
+        /// <param name="probability"> HarmProbability for the rating </param>
+        internal PalmSafetyRating(gav::HarmCategory category, HarmProbability probability)
         {
             Category = category;
             Probability = probability;

@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace LLMSharp.Google.Palm.DiscussService
 {
+    /// <summary>
+    /// Class representation of the Chat Completion Request input
+    /// </summary>
     public class PalmChatCompletionRequest
     {
         /// <summary>
@@ -14,7 +17,7 @@ namespace LLMSharp.Google.Palm.DiscussService
         /// <summary>
         /// Text that should be provided to the model first, to ground the response.
         /// If not empty, this context will be given to the model first before the examples and messages.
-        //// This field can be a description of your prompt to the model to help provide context and guide the responses.
+        /// This field can be a description of your prompt to the model to help provide context and guide the responses.
         /// </summary>
         public string Context { get; set; } = string.Empty;
 

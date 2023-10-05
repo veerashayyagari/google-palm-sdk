@@ -18,6 +18,11 @@ namespace LLMSharp.Google.Palm.Common
         /// </summary>
         public HarmBlockThreshold Threshold { get; private set; }
 
+        /// <summary>
+        /// Safety Setting constructor
+        /// </summary>
+        /// <param name="category">HarmCategory</param>
+        /// <param name="threshold">BlockThreshold</param>
         public PalmSafetySetting(gav::HarmCategory category, HarmBlockThreshold threshold)
         {
             Category = category;

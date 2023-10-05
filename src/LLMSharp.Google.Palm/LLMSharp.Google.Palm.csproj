@@ -19,6 +19,7 @@
 		<SignAssembly>True</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\..\google-palm-sdk.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>True</DelaySign>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

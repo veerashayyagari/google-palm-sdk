@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace LLMSharp.Google.Palm
 {
+    /// <summary>
+    /// Palm2 Text Completion Service contract
+    /// </summary>
     public interface IPalmTextService
     {
         /// <summary>

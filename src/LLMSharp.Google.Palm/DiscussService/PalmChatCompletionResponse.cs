@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace LLMSharp.Google.Palm.DiscussService
 {
+    /// <summary>
+    /// Class representing the response from a Palm Chat Completion Request
+    /// </summary>
     public class PalmChatCompletionResponse
     {
         internal PalmChatCompletionResponse(gav::GenerateMessageResponse response)

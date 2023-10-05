@@ -50,7 +50,7 @@ namespace LLMSharp.Google.Palm.DiscussService
         /// <param name="examples">Optional examples included as part of the message</param>
         /// <param name="context">Optional context included in the message</param>
         /// <param name="model">Model used for counting tokens. Default: models/chat-bison-001</param>
-        /// <param name="options">Options for customizing the request</param>
+        /// <param name="reqOptions">Options for customizing the request</param>
         /// <param name="cancellationToken">token used for cancelling the async request</param>
         /// <returns>message token count</returns>
         public async Task<int> CountMessageTokensAsync(

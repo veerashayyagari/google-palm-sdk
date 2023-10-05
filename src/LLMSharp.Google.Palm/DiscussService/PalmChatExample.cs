@@ -4,6 +4,9 @@ using System.Text;
 
 namespace LLMSharp.Google.Palm
 {
+    /// <summary>
+    /// Class to represent examples to include in the Palm Completion Request
+    /// </summary>
     public class PalmChatExample
     {
         /// <summary>
